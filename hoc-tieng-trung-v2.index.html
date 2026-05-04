@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汉语学习 · HSK2/HSK3 + 汉语教程3</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #12100E;
+  --ink2: #3D3530;
+  --ink3: #7A6E68;
+  --paper: #FDFAF5;
+  --paper2: #F5EFE3;
+  --paper3: #EDE4D3;
+  --red: #C0392B;
+  --red2: #E74C3C;
+  --red-dark: #7B241C;
+  --gold: #B8860B;
+  --gold-light: #D4AC0D;
+  --gold-pale: #FAF0C8;
+  --green: #1A6B3A;
+  --blue: #1A4A8A;
+  --border: rgba(18,16,14,0.1);
+  --shadow-sm: 0 2px 8px rgba(18,16,14,0.08);
+  --shadow-md: 0 6px 24px rgba(18,16,14,0.12);
+  --shadow-lg: 0 16px 48px rgba(18,16,14,0.16);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ===== SIDEBAR ===== */
+.app { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: 240px;
+  background: var(--ink);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 28px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.logo {
+  display: flex; align-items: center; gap: 12px;
+}
+
+.logo-hanzi {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 40px;
+  color: var(--gold-light);
+  line-height: 1;
+}
+
+.logo-text { }
+.logo-text .main { font-size: 14px; font-weight: 600; color: #fff; letter-spacing: 0.02em; }
+.logo-text .sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+
+.sidebar-nav { padding: 16px 12px; flex: 1; overflow-y: auto; }
+
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.3);
+  padding: 0 8px;
+  margin: 16px 0 6px;
+  text-transform: uppercase;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.18s;
+  color: rgba(255,255,255,0.6);
+  font-size: 13.5px;
+  font-weight: 400;
+  user-select: none;
+  position: relative;
+}
+
+.nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+
+.nav-item.active {
+  background: rgba(212,172,13,0.15);
+  color: var(--gold-light);
+  font-weight: 500;
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 20%; bottom: 20%;
+  width: 3px;
+  background: var(--gold-light);
+  border-radius: 0 3px 3px 0;
+}
+
+.nav-icon { font-size: 16px; width: 20px; text-align: center; }
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+}
+
+/* ===== MAIN ===== */
+.main-content {
+  margin-left: 240px;
+  flex: 1;
+  min-height: 100vh;
+}
+
+.page { display: none; padding: 40px 48px 80px; max-width: 1000px; }
+.page.active { display: block; }
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 36px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-title {
+  font-family: 'Instrument Serif', 'Noto Serif SC', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: var(--ink3);
+  margin-top: 6px;
+  font-weight: 300;
+}
+
+/* ===== VOCAB ===== */
+.vocab-controls {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px;
+}
+
+.filter-btn {
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--ink3);
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.filter-btn:hover { border-color: var(--ink2); color: var(--ink); }
+.filter-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+.search-box {
+  display: flex; align-items: center; gap: 8px;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  border: none; outline: none; font-family: inherit; font-size: 14px; color: var(--ink); background: transparent; flex: 1;
+}
+
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.vocab-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.vocab-card:hover {
+  border-color: var(--red);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.vocab-card .hsk-badge {
+  position: absolute; top: 12px; right: 12px;
+  font-size: 9px; font-weight: 600;
+  padding: 2px 6px; border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.hsk2 { background: #EBF5FB; color: #1A5276; }
+.hsk3 { background: #FEF9E7; color: #7D6608; }
+.gt3  { background: #F9EBEA; color: #7B241C; }
+
+.vocab-hanzi {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 42px;
+  color: var(--red-dark);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.vocab-pinyin { font-size: 13px; color: var(--red); font-style: italic; margin-bottom: 3px; }
+.vocab-viet   { font-size: 12.5px; color: var(--ink3); }
+.vocab-type   { font-size: 10px; color: var(--ink3); background: var(--paper2); padding: 2px 7px; border-radius: 4px; display: inline-block; margin-top: 6px; }
+
+/* Word Detail Modal */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(18,16,14,0.6); z-index: 200;
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+  background: var(--paper);
+  border-radius: 20px;
+  padding: 40px 36px;
+  max-width: 460px; width: 100%;
+  position: relative;
+  max-height: 80vh; overflow-y: auto;
+  border-top: 5px solid var(--red);
+}
+
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--paper2); border: none; cursor: pointer;
+  font-size: 15px; color: var(--ink3);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.modal-main-hanzi {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 80px; color: var(--red-dark);
+  text-align: center; line-height: 1; margin-bottom: 6px;
+}
+
+.modal-pinyin { text-align: center; font-size: 20px; color: var(--red); font-style: italic; margin-bottom: 4px; }
+.modal-meaning { text-align: center; font-size: 15px; color: var(--ink3); margin-bottom: 20px; }
+
+.modal-section { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--ink3); text-transform: uppercase; margin-bottom: 8px; margin-top: 18px; }
+
+.example-block {
+  background: #fff; border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 8px;
+  border-left: 3px solid var(--red);
+}
+.example-block .zh { font-family: 'Noto Serif SC', serif; font-size: 17px; color: var(--ink); margin-bottom: 3px; }
+.example-block .py { font-size: 12px; color: var(--red); font-style: italic; margin-bottom: 2px; }
+.example-block .vn { font-size: 12px; color: var(--ink3); }
+
+.speak-btn-sm {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; background: var(--ink); color: #fff;
+  border: none; border-radius: var(--radius-sm); font-size: 13px;
+  font-weight: 500; cursor: pointer; font-family: inherit; margin-top: 6px;
+  transition: background 0.2s;
+}
+.speak-btn-sm:hover { background: var(--red-dark); }
+
+/* ===== GRAMMAR ===== */
+.grammar-list { display: flex; flex-direction: column; gap: 20px; }
+
+.grammar-card {
+  background: #fff; border-radius: var(--radius);
+  border: 1.5px solid var(--border); overflow: hidden;
+}
+
+.grammar-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 20px 24px; cursor: pointer;
+  transition: background 0.15s;
+}
+.grammar-header:hover { background: var(--paper2); }
+
+.grammar-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--red); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; flex-shrink: 0;
+}
+
+.grammar-title { font-size: 16px; font-weight: 500; color: var(--ink); flex: 1; }
+.grammar-level { font-size: 11px; background: var(--gold-pale); color: var(--gold); padding: 3px 10px; border-radius: 10px; font-weight: 600; }
+.grammar-toggle { font-size: 18px; color: var(--ink3); transition: transform 0.25s; }
+.grammar-card.open .grammar-toggle { transform: rotate(180deg); }
+
+.grammar-body {
+  padding: 0 24px;
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+.grammar-card.open .grammar-body { max-height: 1000px; padding: 0 24px 24px; }
+
+.grammar-structure {
+  background: var(--paper2); border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-bottom: 16px;
+  font-family: 'Noto Serif SC', serif; font-size: 16px;
+  color: var(--red-dark); letter-spacing: 0.02em;
+}
+
+.grammar-note { font-size: 13.5px; color: var(--ink2); line-height: 1.75; margin-bottom: 14px; }
+
+.grammar-examples { display: flex; flex-direction: column; gap: 8px; }
+.grammar-ex {
+  background: var(--paper); border-radius: var(--radius-sm); padding: 12px 14px;
+  border-left: 3px solid var(--gold);
+}
+.grammar-ex .zh { font-family: 'Noto Serif SC', serif; font-size: 16px; color: var(--ink); }
+.grammar-ex .py { font-size: 12px; color: var(--red); font-style: italic; }
+.grammar-ex .vn { font-size: 12px; color: var(--ink3); }
+
+/* ===== FLASHCARD / SRS ===== */
+.srs-stats {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 32px;
+}
+.stat-card {
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 16px 18px; text-align: center;
+}
+.stat-num { font-size: 28px; font-weight: 600; color: var(--ink); line-height: 1; }
+.stat-label { font-size: 11px; color: var(--ink3); margin-top: 4px; }
+.stat-card.due .stat-num { color: var(--red); }
+.stat-card.mastered .stat-num { color: var(--green); }
+
+.srs-filter { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+
+.fc-arena {
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  padding: 0 0 40px;
+}
+
+.fc-big {
+  width: 100%; max-width: 520px;
+  height: 260px; perspective: 1200px; cursor: pointer;
+}
+
+.fc-inner {
+  width:100%; height:100%;
+  position: relative; transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+
+.fc-big.flipped .fc-inner { transform: rotateY(180deg); }
+
+.fc-face {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  border-radius: 20px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 28px;
+}
+
+.fc-front {
+  background: var(--ink);
+  box-shadow: var(--shadow-lg);
+}
+
+.fc-back {
+  background: #fff;
+  border: 2px solid var(--border);
+  transform: rotateY(180deg);
+  box-shadow: var(--shadow-md);
+}
+
+.fc-front .hanzi {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 80px; color: var(--gold-light); line-height: 1;
+}
+
+.fc-front .fc-label {
+  font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 10px;
+}
+
+.fc-back .pinyin {
+  font-size: 24px; color: var(--red); font-style: italic; margin-bottom: 6px;
+}
+.fc-back .meaning { font-size: 22px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.fc-back .type-tag {
+  font-size: 11px; background: var(--paper2); color: var(--ink3);
+  padding: 3px 10px; border-radius: 10px;
+}
+.fc-back .ex-mini {
+  margin-top: 14px; font-family: 'Noto Serif SC', serif;
+  font-size: 15px; color: var(--ink2); text-align: center;
+}
+.fc-back .ex-mini-vn { font-size: 12px; color: var(--ink3); text-align: center; margin-top: 2px; }
+
+.srs-buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+.srs-btn {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 12px 20px; border-radius: var(--radius-sm);
+  border: none; cursor: pointer; font-family: inherit; transition: all 0.15s;
+  min-width: 90px;
+}
+.srs-btn .rating { font-size: 15px; font-weight: 600; }
+.srs-btn .interval { font-size: 11px; margin-top: 2px; opacity: 0.75; }
+.srs-btn:hover { transform: scale(1.04); }
+
+.srs-btn.again  { background: #FDEDEC; color: #C0392B; border: 1.5px solid #F5B7B1; }
+.srs-btn.hard   { background: #FEF5E7; color: #A04000; border: 1.5px solid #FAD7A0; }
+.srs-btn.good   { background: #EBF5FB; color: #1A5276; border: 1.5px solid #A9CCE3; }
+.srs-btn.easy   { background: #EAFAF1; color: #1A6B3A; border: 1.5px solid #A9DFBF; }
+
+.fc-meta {
+  display: flex; gap: 20px; font-size: 12px; color: var(--ink3); align-items: center;
+}
+
+.fc-progress-bar {
+  width: 100%; max-width: 520px; height: 4px;
+  background: var(--paper3); border-radius: 2px; overflow: hidden;
+}
+.fc-progress-fill { height: 100%; background: var(--gold); transition: width 0.4s; }
+
+.fc-hint { font-size: 13px; color: var(--ink3); }
+
+/* ===== EXERCISES ===== */
+.exercise-tabs { display: flex; gap: 4px; margin-bottom: 28px; flex-wrap: wrap; }
+
+.ex-tab {
+  padding: 9px 20px; border-radius: 20px; cursor: pointer;
+  font-size: 13px; font-weight: 500; font-family: inherit;
+  border: 1.5px solid var(--border); background: transparent; color: var(--ink3);
+  transition: all 0.15s;
+}
+.ex-tab:hover { border-color: var(--ink); color: var(--ink); }
+.ex-tab.active { background: var(--red); color: #fff; border-color: var(--red); }
+
+.exercise-section { display: none; }
+.exercise-section.active { display: block; }
+
+/* MCQ */
+.exercise-card {
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 28px 28px 24px; margin-bottom: 20px;
+}
+
+.ex-num { font-size: 11px; font-weight: 600; color: var(--ink3); letter-spacing: 0.06em; margin-bottom: 14px; }
+
+.ex-question {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 26px; color: var(--ink); margin-bottom: 6px;
+}
+
+.ex-question-en { font-size: 14px; color: var(--ink3); margin-bottom: 20px; font-style: italic; }
+
+.mcq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.mcq-opt {
+  padding: 13px 16px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: transparent;
+  font-family: inherit; font-size: 14px; cursor: pointer;
+  color: var(--ink); text-align: left; transition: all 0.15s;
+}
+.mcq-opt:hover:not(:disabled) { border-color: var(--red); background: #FEF9F9; }
+.mcq-opt.correct { background: #EAFAF1; border-color: var(--green); color: var(--green); }
+.mcq-opt.wrong   { background: #FDEDEC; border-color: var(--red); color: var(--red); }
+
+.ex-feedback {
+  margin-top: 14px; padding: 12px 16px; border-radius: var(--radius-sm);
+  font-size: 14px; display: none;
+}
+.ex-feedback.show { display: block; }
+.ex-feedback.ok { background: #EAFAF1; color: var(--green); }
+.ex-feedback.ko { background: #FDEDEC; color: var(--red); }
+
+/* Fill blank */
+.fill-input {
+  border: 2px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 14px; font-family: 'Noto Serif SC', serif; font-size: 18px;
+  outline: none; width: 100%; max-width: 280px; color: var(--ink);
+  transition: border-color 0.15s; background: transparent;
+}
+.fill-input:focus { border-color: var(--red); }
+.fill-input.correct { border-color: var(--green); background: #EAFAF1; }
+.fill-input.wrong   { border-color: var(--red);   background: #FDEDEC; }
+
+.btn-check {
+  margin-top: 12px; padding: 10px 24px; background: var(--ink); color: #fff;
+  border: none; border-radius: var(--radius-sm); font-size: 14px;
+  font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.2s;
+}
+.btn-check:hover { background: var(--red-dark); }
+
+/* Writing */
+.writing-prompt {
+  background: var(--paper2); border-radius: var(--radius-sm); padding: 20px;
+  margin-bottom: 16px; font-family: 'Noto Serif SC', serif;
+  font-size: 19px; color: var(--ink); border-left: 4px solid var(--red);
+}
+.writing-area {
+  width: 100%; min-height: 120px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 14px 16px; font-family: 'Noto Serif SC', inherit; font-size: 16px;
+  color: var(--ink); resize: vertical; outline: none; transition: border-color 0.15s;
+  background: transparent;
+}
+.writing-area:focus { border-color: var(--red); }
+
+.model-answer {
+  display: none; background: var(--paper2); border-radius: var(--radius-sm);
+  padding: 16px; margin-top: 12px;
+}
+.model-answer.show { display: block; }
+.model-answer .label { font-size: 11px; font-weight: 600; color: var(--ink3); margin-bottom: 8px; letter-spacing: 0.06em; }
+.model-answer .content { font-family: 'Noto Serif SC', serif; font-size: 16px; color: var(--ink); }
+.model-answer .content-vn { font-size: 13px; color: var(--ink3); margin-top: 4px; }
+
+/* Listening */
+.listen-card {
+  background: var(--ink); border-radius: var(--radius); padding: 32px;
+  text-align: center; color: #fff; margin-bottom: 20px;
+}
+.listen-icon { font-size: 48px; margin-bottom: 12px; }
+.listen-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; background: var(--gold-light); color: var(--ink);
+  border: none; border-radius: 20px; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.listen-btn:hover { transform: scale(1.04); background: #e5c20f; }
+.listen-text { font-family: 'Noto Serif SC', serif; font-size: 20px; color: rgba(255,255,255,0); margin-top: 14px; transition: color 0.3s; }
+.listen-text.revealed { color: #fff; }
+
+/* ===== VIDEOS ===== */
+.video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 20px; }
+
+.video-card {
+  background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; transition: all 0.2s; cursor: pointer;
+  text-decoration: none; color: inherit; display: block;
+}
+.video-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+.video-thumb {
+  height: 160px; background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.video-thumb-bg {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Noto Serif SC', serif; font-size: 64px;
+  color: rgba(255,255,255,0.1);
+  font-weight: 700;
+}
+.play-btn {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,0.9); display: flex;
+  align-items: center; justify-content: center; position: relative; z-index: 1;
+  font-size: 20px; padding-left: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.video-info { padding: 16px; }
+.video-channel { font-size: 11px; color: var(--red); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 4px; }
+.video-title { font-size: 14px; font-weight: 500; color: var(--ink); line-height: 1.4; margin-bottom: 6px; }
+.video-desc { font-size: 12px; color: var(--ink3); line-height: 1.5; }
+.video-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.video-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--paper2); color: var(--ink3); }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--ink); color: #fff;
+  padding: 10px 24px; border-radius: 24px; font-size: 14px;
+  z-index: 300; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ===== PROGRESS ===== */
+.progress-ring { display: inline-block; position: relative; }
+.progress-ring-text {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: var(--ink);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main-content { margin-left: 0; }
+  .page { padding: 24px 20px 60px; }
+  .srs-stats { grid-template-columns: 1fr 1fr; }
+  .mcq-grid { grid-template-columns: 1fr; }
+  .video-grid { grid-template-columns: 1fr; }
+  .vocab-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .mobile-nav {
+    display: flex !important;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--ink); padding: 10px 0;
+    z-index: 50; justify-content: space-around;
+  }
+  .mobile-nav-item { color: rgba(255,255,255,0.5); font-size: 11px; text-align: center; cursor: pointer; flex: 1; padding: 4px 0; }
+  .mobile-nav-item.active { color: var(--gold-light); }
+  .mobile-nav-item .m-icon { font-size: 20px; display: block; }
+}
+
+.mobile-nav { display: none; }
+
+/* number highlight */
+.highlight { color: var(--red); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <div class="logo-hanzi">汉</div>
+      <div class="logo-text">
+        <div class="main">汉语学习</div>
+        <div class="sub">HSK2 · HSK3 · 汉语教程3</div>
+      </div>
+    </div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section-label">Nội dung</div>
+    <div class="nav-item active" onclick="showPage('vocab',this)">
+      <span class="nav-icon">📖</span> Từ Vựng
+    </div>
+    <div class="nav-item" onclick="showPage('grammar',this)">
+      <span class="nav-icon">📐</span> Ngữ Pháp
+    </div>
+    <div class="nav-section-label">Luyện tập</div>
+    <div class="nav-item" onclick="showPage('flashcard',this)">
+      <span class="nav-icon">🃏</span> Flashcard SRS
+    </div>
+    <div class="nav-item" onclick="showPage('exercises',this)">
+      <span class="nav-icon">✏️</span> Bài Tập
+    </div>
+    <div class="nav-section-label">Tài nguyên</div>
+    <div class="nav-item" onclick="showPage('videos',this)">
+      <span class="nav-icon">▶️</span> Video Tham Khảo
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    Spaced Repetition · SM-2 Algorithm
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main-content">
+
+<!-- ====== PAGE: VOCAB ====== -->
+<div id="page-vocab" class="page active">
+  <div class="page-header">
+    <div>
+      <div class="page-title">📖 Từ Vựng</div>
+      <div class="page-subtitle">HSK2 (150 từ) · HSK3 (300 từ) · Giáo trình Hán ngữ 3 — Nhấn vào từ để xem chi tiết</div>
+    </div>
+  </div>
+  <div class="vocab-controls">
+    <button class="filter-btn active" onclick="filterVocab('all',this)">Tất cả</button>
+    <button class="filter-btn" onclick="filterVocab('hsk2',this)">HSK 2</button>
+    <button class="filter-btn" onclick="filterVocab('hsk3',this)">HSK 3</button>
+    <button class="filter-btn" onclick="filterVocab('gt3',this)">汉语教程 3</button>
+    <button class="filter-btn" onclick="filterVocab('n',this)">Danh từ</button>
+    <button class="filter-btn" onclick="filterVocab('v',this)">Động từ</button>
+    <button class="filter-btn" onclick="filterVocab('adj',this)">Tính từ</button>
+  </div>
+  <div class="search-box">
+    <span style="color:var(--ink3)">🔍</span>
+    <input type="text" placeholder="Tìm từ (chữ Hán, pinyin, nghĩa)..." id="vocab-search" oninput="searchVocab()">
+  </div>
+  <div class="vocab-grid" id="vocab-grid"></div>
+</div>
+
+<!-- ====== PAGE: GRAMMAR ====== -->
+<div id="page-grammar" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">📐 Ngữ Pháp</div>
+      <div class="page-subtitle">Các điểm ngữ pháp trọng tâm trong HSK2, HSK3 và Giáo trình Hán ngữ 3</div>
+    </div>
+  </div>
+  <div class="grammar-list" id="grammar-list"></div>
+</div>
+
+<!-- ====== PAGE: FLASHCARD SRS ====== -->
+<div id="page-flashcard" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">🃏 Flashcard · Spaced Repetition</div>
+      <div class="page-subtitle">Thuật toán SM-2 — tự động lên lịch ôn tập dựa trên mức độ nhớ của bạn</div>
+    </div>
+  </div>
+  <div class="srs-stats">
+    <div class="stat-card due">
+      <div class="stat-num" id="srs-due">0</div>
+      <div class="stat-label">Cần ôn hôm nay</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="srs-new">0</div>
+      <div class="stat-label">Thẻ mới</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="srs-learning">0</div>
+      <div class="stat-label">Đang học</div>
+    </div>
+    <div class="stat-card mastered">
+      <div class="stat-num" id="srs-mastered">0</div>
+      <div class="stat-label">Đã thành thạo</div>
+    </div>
+  </div>
+
+  <div class="srs-filter">
+    <button class="filter-btn active" onclick="setSrsFilter('all',this)">Tất cả</button>
+    <button class="filter-btn" onclick="setSrsFilter('hsk2',this)">HSK 2</button>
+    <button class="filter-btn" onclick="setSrsFilter('hsk3',this)">HSK 3</button>
+    <button class="filter-btn" onclick="setSrsFilter('gt3',this)">汉语教程 3</button>
+  </div>
+
+  <div class="fc-arena">
+    <div class="fc-progress-bar"><div class="fc-progress-fill" id="fc-pbar" style="width:0%"></div></div>
+    <div class="fc-meta">
+      <span id="fc-meta-left">Nhấn vào thẻ để lật</span>
+      <span id="fc-meta-card">0 / 0</span>
+    </div>
+    <div class="fc-big" id="fc-big" onclick="flipFc()">
+      <div class="fc-inner" id="fc-inner">
+        <div class="fc-face fc-front">
+          <div class="hanzi" id="fc-hanzi">—</div>
+          <div class="fc-label">Nhấn để xem nghĩa</div>
+        </div>
+        <div class="fc-face fc-back">
+          <div class="pinyin" id="fc-pinyin"></div>
+          <div class="meaning" id="fc-meaning"></div>
+          <div class="type-tag" id="fc-type"></div>
+          <div class="ex-mini" id="fc-ex"></div>
+          <div class="ex-mini-vn" id="fc-exvn"></div>
+        </div>
+      </div>
+    </div>
+    <div class="srs-buttons" id="srs-buttons" style="display:none">
+      <button class="srs-btn again" onclick="srsAnswer(0)">
+        <span class="rating">✗ Lại</span>
+        <span class="interval">1 phút</span>
+      </button>
+      <button class="srs-btn hard" onclick="srsAnswer(1)">
+        <span class="rating">Khó</span>
+        <span class="interval" id="srs-interval-hard">1 ngày</span>
+      </button>
+      <button class="srs-btn good" onclick="srsAnswer(2)">
+        <span class="rating">Tốt</span>
+        <span class="interval" id="srs-interval-good">3 ngày</span>
+      </button>
+      <button class="srs-btn easy" onclick="srsAnswer(3)">
+        <span class="rating">✓ Dễ</span>
+        <span class="interval" id="srs-interval-easy">7 ngày</span>
+      </button>
+    </div>
+    <div id="fc-done" style="display:none;text-align:center">
+      <div style="font-size:52px;margin-bottom:12px">🎉</div>
+      <div style="font-size:20px;font-weight:600;color:var(--green);margin-bottom:6px">Hoàn thành phiên học!</div>
+      <div style="font-size:14px;color:var(--ink3);margin-bottom:20px">Bạn đã ôn xong tất cả thẻ cần học hôm nay.</div>
+      <button class="btn-check" onclick="resetFcSession()">🔄 Học lại</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== PAGE: EXERCISES ====== -->
+<div id="page-exercises" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">✏️ Bài Tập</div>
+      <div class="page-subtitle">4 kỹ năng: Nghe · Nói · Đọc · Viết</div>
+    </div>
+  </div>
+  <div class="exercise-tabs">
+    <button class="ex-tab active" onclick="showExSection('ex-vocab',this)">📝 Từ vựng</button>
+    <button class="ex-tab" onclick="showExSection('ex-grammar-ex',this)">📐 Ngữ pháp</button>
+    <button class="ex-tab" onclick="showExSection('ex-writing',this)">✍️ Viết</button>
+    <button class="ex-tab" onclick="showExSection('ex-reading',this)">📄 Đọc hiểu</button>
+    <button class="ex-tab" onclick="showExSection('ex-listening',this)">🎧 Nghe</button>
+    <button class="ex-tab" onclick="showExSection('ex-speaking',this)">🎤 Nói</button>
+  </div>
+
+  <!-- Vocab exercises -->
+  <div class="exercise-section active" id="ex-vocab">
+    <div id="vocab-exercises-container"></div>
+  </div>
+
+  <!-- Grammar exercises -->
+  <div class="exercise-section" id="ex-grammar-ex">
+    <div id="grammar-exercises-container"></div>
+  </div>
+
+  <!-- Writing -->
+  <div class="exercise-section" id="ex-writing">
+    <div id="writing-container"></div>
+  </div>
+
+  <!-- Reading -->
+  <div class="exercise-section" id="ex-reading">
+    <div id="reading-container"></div>
+  </div>
+
+  <!-- Listening -->
+  <div class="exercise-section" id="ex-listening">
+    <div id="listening-container"></div>
+  </div>
+
+  <!-- Speaking -->
+  <div class="exercise-section" id="ex-speaking">
+    <div id="speaking-container"></div>
+  </div>
+</div>
+
+<!-- ====== PAGE: VIDEOS ====== -->
+<div id="page-videos" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">▶️ Video Tham Khảo</div>
+      <div class="page-subtitle">Kênh YouTube & tài nguyên học tiếng Trung chất lượng cao — phù hợp trình độ HSK2-3</div>
+    </div>
+  </div>
+  <div class="video-grid" id="video-grid"></div>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /app -->
+
+<!-- Mobile nav -->
+<div class="mobile-nav">
+  <div class="mobile-nav-item active" onclick="showPage('vocab',this)"><span class="m-icon">📖</span>Từ vựng</div>
+  <div class="mobile-nav-item" onclick="showPage('grammar',this)"><span class="m-icon">📐</span>Ngữ pháp</div>
+  <div class="mobile-nav-item" onclick="showPage('flashcard',this)"><span class="m-icon">🃏</span>SRS</div>
+  <div class="mobile-nav-item" onclick="showPage('exercises',this)"><span class="m-icon">✏️</span>Bài tập</div>
+  <div class="mobile-nav-item" onclick="showPage('videos',this)"><span class="m-icon">▶️</span>Video</div>
+</div>
+
+<!-- Modals -->
+<div class="modal-overlay" id="vocab-modal" onclick="closeVocabModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('vocab-modal').classList.remove('open')">✕</button>
+    <div class="modal-main-hanzi" id="m-hz"></div>
+    <div class="modal-pinyin" id="m-py"></div>
+    <div class="modal-meaning" id="m-mn"></div>
+    <div class="modal-section">Loại từ</div>
+    <div id="m-tp" style="font-size:13px;color:var(--ink2)"></div>
+    <div class="modal-section">Ví dụ câu</div>
+    <div id="m-exs"></div>
+    <button class="speak-btn-sm" onclick="speak(document.getElementById('m-hz').textContent)">🔊 Phát âm</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== DATA ====================
+
+const VOCAB = [
+  // HSK2
+  {zh:'把',py:'bǎ',vn:'cầm lấy; trợ từ (把字句)',type:'prep/v',level:'hsk2',
+   ex:[{zh:'请把书给我。',py:'Qǐng bǎ shū gěi wǒ.',vn:'Xin đưa sách cho tôi.'}]},
+  {zh:'比',py:'bǐ',vn:'so với, hơn',type:'prep',level:'hsk2',
+   ex:[{zh:'他比我高。',py:'Tā bǐ wǒ gāo.',vn:'Anh ấy cao hơn tôi.'}]},
+  {zh:'别',py:'bié',vn:'đừng, không được',type:'adv',level:'hsk2',
+   ex:[{zh:'别说话！',py:'Bié shuōhuà!',vn:'Đừng nói chuyện!'}]},
+  {zh:'从',py:'cóng',vn:'từ (nơi/thời gian)',type:'prep',level:'hsk2',
+   ex:[{zh:'我从越南来。',py:'Wǒ cóng Yuènán lái.',vn:'Tôi đến từ Việt Nam.'}]},
+  {zh:'但是',py:'dànshì',vn:'nhưng, tuy nhiên',type:'conj',level:'hsk2',
+   ex:[{zh:'他很忙，但是很开心。',py:'Tā hěn máng, dànshì hěn kāixīn.',vn:'Anh ấy rất bận nhưng rất vui.'}]},
+  {zh:'当然',py:'dāngrán',vn:'tất nhiên, dĩ nhiên',type:'adv',level:'hsk2',
+   ex:[{zh:'当然可以！',py:'Dāngrán kěyǐ!',vn:'Tất nhiên được rồi!'}]},
+  {zh:'地方',py:'dìfang',vn:'nơi chốn, địa điểm',type:'n',level:'hsk2',
+   ex:[{zh:'这个地方很漂亮。',py:'Zhège dìfang hěn piàoliang.',vn:'Nơi này rất đẹp.'}]},
+  {zh:'东西',py:'dōngxi',vn:'đồ vật, thứ',type:'n',level:'hsk2',
+   ex:[{zh:'你买了什么东西？',py:'Nǐ mǎile shénme dōngxi?',vn:'Bạn mua gì vậy?'}]},
+  {zh:'了解',py:'liǎojiě',vn:'hiểu rõ, tìm hiểu',type:'v',level:'hsk2',
+   ex:[{zh:'我想了解中国文化。',py:'Wǒ xiǎng liǎojiě Zhōngguó wénhuà.',vn:'Tôi muốn tìm hiểu văn hóa Trung Quốc.'}]},
+  {zh:'觉得',py:'juéde',vn:'cảm thấy, cho rằng',type:'v',level:'hsk2',
+   ex:[{zh:'我觉得汉语很有意思。',py:'Wǒ juéde Hànyǔ hěn yǒu yìsi.',vn:'Tôi thấy tiếng Trung rất thú vị.'}]},
+  {zh:'可能',py:'kěnéng',vn:'có thể (xác suất)',type:'adv/adj',level:'hsk2',
+   ex:[{zh:'他可能在家。',py:'Tā kěnéng zài jiā.',vn:'Anh ấy có thể đang ở nhà.'}]},
+  {zh:'已经',py:'yǐjīng',vn:'đã (rồi)',type:'adv',level:'hsk2',
+   ex:[{zh:'我已经吃了。',py:'Wǒ yǐjīng chī le.',vn:'Tôi đã ăn rồi.'}]},
+  {zh:'一起',py:'yīqǐ',vn:'cùng nhau',type:'adv',level:'hsk2',
+   ex:[{zh:'我们一起去吧！',py:'Wǒmen yīqǐ qù ba!',vn:'Chúng ta cùng đi nhé!'}]},
+  {zh:'应该',py:'yīnggāi',vn:'nên, phải',type:'aux',level:'hsk2',
+   ex:[{zh:'你应该多运动。',py:'Nǐ yīnggāi duō yùndòng.',vn:'Bạn nên vận động nhiều hơn.'}]},
+  {zh:'因为',py:'yīnwèi',vn:'vì, bởi vì',type:'conj',level:'hsk2',
+   ex:[{zh:'我学汉语，因为我喜欢中国。',py:'Wǒ xué Hànyǔ, yīnwèi wǒ xǐhuān Zhōngguó.',vn:'Tôi học tiếng Trung vì tôi thích Trung Quốc.'}]},
+  {zh:'所以',py:'suǒyǐ',vn:'vì vậy, cho nên',type:'conj',level:'hsk2',
+   ex:[{zh:'下雨了，所以我没去。',py:'Xiàyǔ le, suǒyǐ wǒ méi qù.',vn:'Trời mưa, vì vậy tôi không đi.'}]},
+  {zh:'虽然',py:'suīrán',vn:'tuy (... nhưng)',type:'conj',level:'hsk2',
+   ex:[{zh:'虽然难，但是很有趣。',py:'Suīrán nán, dànshì hěn yǒuqù.',vn:'Tuy khó nhưng rất thú vị.'}]},
+  {zh:'以为',py:'yǐwéi',vn:'tưởng (nhầm) là',type:'v',level:'hsk2',
+   ex:[{zh:'我以为你走了。',py:'Wǒ yǐwéi nǐ zǒu le.',vn:'Tôi tưởng bạn đi rồi.'}]},
+  {zh:'一定',py:'yīdìng',vn:'nhất định, chắc chắn',type:'adv',level:'hsk2',
+   ex:[{zh:'你一定能学好！',py:'Nǐ yīdìng néng xuéhǎo!',vn:'Bạn nhất định học được!'}]},
+  {zh:'关系',py:'guānxi',vn:'quan hệ, liên quan',type:'n',level:'hsk2',
+   ex:[{zh:'没关系。',py:'Méi guānxi.',vn:'Không sao.'}]},
+  // HSK3
+  {zh:'按照',py:'ànzhào',vn:'theo, căn cứ vào',type:'prep',level:'hsk3',
+   ex:[{zh:'按照要求完成作业。',py:'Ànzhào yāoqiú wánchéng zuòyè.',vn:'Hoàn thành bài tập theo yêu cầu.'}]},
+  {zh:'变化',py:'biànhuà',vn:'sự thay đổi, biến hóa',type:'n/v',level:'hsk3',
+   ex:[{zh:'城市变化很大。',py:'Chéngshì biànhuà hěn dà.',vn:'Thành phố thay đổi rất nhiều.'}]},
+  {zh:'部分',py:'bùfen',vn:'bộ phận, phần',type:'n',level:'hsk3',
+   ex:[{zh:'大部分同学喜欢汉语。',py:'Dà bùfen tóngxué xǐhuān Hànyǔ.',vn:'Phần lớn học sinh thích tiếng Trung.'}]},
+  {zh:'成功',py:'chénggōng',vn:'thành công',type:'v/n',level:'hsk3',
+   ex:[{zh:'努力才能成功。',py:'Nǔlì cái néng chénggōng.',vn:'Cố gắng mới thành công được.'}]},
+  {zh:'打算',py:'dǎsuàn',vn:'dự định, định',type:'v/n',level:'hsk3',
+   ex:[{zh:'你打算什么时候去？',py:'Nǐ dǎsuàn shénme shíhou qù?',vn:'Bạn định đi lúc nào?'}]},
+  {zh:'发现',py:'fāxiàn',vn:'phát hiện, nhận ra',type:'v',level:'hsk3',
+   ex:[{zh:'我发现他的秘密。',py:'Wǒ fāxiàn tā de mìmì.',vn:'Tôi phát hiện ra bí mật của anh ấy.'}]},
+  {zh:'方法',py:'fāngfǎ',vn:'phương pháp, cách',type:'n',level:'hsk3',
+   ex:[{zh:'这个方法很好。',py:'Zhège fāngfǎ hěn hǎo.',vn:'Phương pháp này rất hay.'}]},
+  {zh:'复杂',py:'fùzá',vn:'phức tạp',type:'adj',level:'hsk3',
+   ex:[{zh:'汉语语法不太复杂。',py:'Hànyǔ yǔfǎ bù tài fùzá.',vn:'Ngữ pháp tiếng Trung không quá phức tạp.'}]},
+  {zh:'根据',py:'gēnjù',vn:'dựa vào, theo căn cứ',type:'prep/v',level:'hsk3',
+   ex:[{zh:'根据天气预报，明天下雨。',py:'Gēnjù tiānqì yùbào, míngtiān xiàyǔ.',vn:'Theo dự báo thời tiết, ngày mai sẽ mưa.'}]},
+  {zh:'关注',py:'guānzhù',vn:'quan tâm, theo dõi',type:'v',level:'hsk3',
+   ex:[{zh:'请关注我们的频道。',py:'Qǐng guānzhù wǒmen de píndào.',vn:'Xin hãy theo dõi kênh của chúng tôi.'}]},
+  {zh:'环境',py:'huánjìng',vn:'môi trường, hoàn cảnh',type:'n',level:'hsk3',
+   ex:[{zh:'学习环境很重要。',py:'Xuéxí huánjìng hěn zhòngyào.',vn:'Môi trường học tập rất quan trọng.'}]},
+  {zh:'继续',py:'jìxù',vn:'tiếp tục',type:'v',level:'hsk3',
+   ex:[{zh:'请继续学习！',py:'Qǐng jìxù xuéxí!',vn:'Hãy tiếp tục học nhé!'}]},
+  {zh:'经验',py:'jīngyàn',vn:'kinh nghiệm',type:'n',level:'hsk3',
+   ex:[{zh:'他有丰富的工作经验。',py:'Tā yǒu fēngfù de gōngzuò jīngyàn.',vn:'Anh ấy có kinh nghiệm làm việc phong phú.'}]},
+  {zh:'困难',py:'kùnnan',vn:'khó khăn',type:'adj/n',level:'hsk3',
+   ex:[{zh:'遇到困难不要放弃。',py:'Yùdào kùnnan bù yào fàngqì.',vn:'Gặp khó khăn đừng bỏ cuộc.'}]},
+  {zh:'联系',py:'liánxì',vn:'liên lạc, liên hệ',type:'v/n',level:'hsk3',
+   ex:[{zh:'我们保持联系吧。',py:'Wǒmen bǎochí liánxì ba.',vn:'Chúng ta giữ liên lạc nhé.'}]},
+  {zh:'努力',py:'nǔlì',vn:'cố gắng, nỗ lực',type:'adj/v',level:'hsk3',
+   ex:[{zh:'你要努力学习。',py:'Nǐ yào nǔlì xuéxí.',vn:'Bạn phải cố gắng học.'}]},
+  {zh:'培养',py:'péiyǎng',vn:'bồi dưỡng, đào tạo',type:'v',level:'hsk3',
+   ex:[{zh:'父母培养孩子的习惯。',py:'Fùmǔ péiyǎng háizi de xíguàn.',vn:'Cha mẹ bồi dưỡng thói quen của con cái.'}]},
+  {zh:'其实',py:'qíshí',vn:'thực ra, kỳ thực',type:'adv',level:'hsk3',
+   ex:[{zh:'其实汉语不难。',py:'Qíshí Hànyǔ bù nán.',vn:'Thực ra tiếng Trung không khó.'}]},
+  {zh:'认真',py:'rènzhēn',vn:'nghiêm túc, chăm chỉ',type:'adj',level:'hsk3',
+   ex:[{zh:'要认真听课。',py:'Yào rènzhēn tīngkè.',vn:'Phải chăm chú nghe giảng.'}]},
+  {zh:'随着',py:'suízhe',vn:'cùng với (sự thay đổi)',type:'prep',level:'hsk3',
+   ex:[{zh:'随着时间流逝，我进步了。',py:'Suízhe shíjiān liúshì, wǒ jìnbù le.',vn:'Cùng với thời gian, tôi đã tiến bộ.'}]},
+  // Giáo trình Hán ngữ 3
+  {zh:'除了',py:'chúle',vn:'ngoài... ra, trừ',type:'prep',level:'gt3',
+   ex:[{zh:'除了汉语，我还学英语。',py:'Chúle Hànyǔ, wǒ hái xué Yīngyǔ.',vn:'Ngoài tiếng Trung ra, tôi còn học tiếng Anh.'}]},
+  {zh:'对于',py:'duìyú',vn:'đối với',type:'prep',level:'gt3',
+   ex:[{zh:'对于这个问题，我有不同意见。',py:'Duìyú zhège wèntí, wǒ yǒu bùtóng yìjiàn.',vn:'Đối với vấn đề này, tôi có ý kiến khác.'}]},
+  {zh:'反正',py:'fǎnzhèng',vn:'dù sao thì, đằng nào cũng',type:'adv',level:'gt3',
+   ex:[{zh:'反正你不去，我一个人去。',py:'Fǎnzhèng nǐ bù qù, wǒ yī gè rén qù.',vn:'Dù sao bạn không đi, tôi đi một mình thôi.'}]},
+  {zh:'逐渐',py:'zhújiàn',vn:'dần dần, từng bước',type:'adv',level:'gt3',
+   ex:[{zh:'我逐渐喜欢上了汉语。',py:'Wǒ zhújiàn xǐhuān shàng le Hànyǔ.',vn:'Tôi dần dần thích tiếng Trung.'}]},
+  {zh:'毕竟',py:'bìjìng',vn:'xét cho cùng, sau cùng',type:'adv',level:'gt3',
+   ex:[{zh:'毕竟他是你的朋友。',py:'Bìjìng tā shì nǐ de péngyou.',vn:'Dù sao anh ấy cũng là bạn của bạn.'}]},
+];
+
+const GRAMMAR = [
+  {
+    title: '把字句 — Câu dùng "把"',
+    level: 'HSK2',
+    structure: '主语 + 把 + 宾语 + 动词 + 补语/结果',
+    note: 'Câu 把 nhấn mạnh việc chủ ngữ xử lý tân ngữ ra sao. Tân ngữ phải là xác định (đã biết). Động từ không thể đứng một mình mà cần bổ ngữ kết quả hoặc xu hướng.',
+    examples: [
+      {zh:'请把门关上。',py:'Qǐng bǎ mén guān shàng.',vn:'Xin đóng cửa lại.'},
+      {zh:'他把作业做完了。',py:'Tā bǎ zuòyè zuòwán le.',vn:'Anh ấy đã làm xong bài tập.'},
+      {zh:'我把手机放在桌子上。',py:'Wǒ bǎ shǒujī fàng zài zhuōzi shàng.',vn:'Tôi để điện thoại lên bàn.'},
+    ]
+  },
+  {
+    title: '比较句 — Câu so sánh',
+    level: 'HSK2',
+    structure: 'A + 比 + B + 形容词 (+ 差/多/一点)',
+    note: 'Dùng "比" để so sánh A với B. Có thể thêm "一点儿" (hơn một chút) hoặc "多了/得多" (hơn nhiều). Phủ định dùng "没有" thay vì "不比": A没有B那么+形容词.',
+    examples: [
+      {zh:'她比我聪明。',py:'Tā bǐ wǒ cōngming.',vn:'Cô ấy thông minh hơn tôi.'},
+      {zh:'今天比昨天冷多了。',py:'Jīntiān bǐ zuótiān lěng duō le.',vn:'Hôm nay lạnh hơn hôm qua nhiều.'},
+      {zh:'我没有他跑得快。',py:'Wǒ méiyǒu tā pǎo de kuài.',vn:'Tôi chạy không nhanh bằng anh ấy.'},
+    ]
+  },
+  {
+    title: '被字句 — Câu bị động',
+    level: 'HSK2/HSK3',
+    structure: '主语(受事) + 被 + (施事) + 动词 + 结果',
+    note: 'Câu 被 thường dùng khi sự việc xảy ra nằm ngoài ý muốn của chủ ngữ (thường là tiêu cực). Động từ cần bổ ngữ kết quả, không đứng một mình.',
+    examples: [
+      {zh:'我的钱被偷了。',py:'Wǒ de qián bèi tōu le.',vn:'Tiền của tôi bị trộm rồi.'},
+      {zh:'作业被老师批评了。',py:'Zuòyè bèi lǎoshī pīpíng le.',vn:'Bài tập bị thầy giáo phê bình.'},
+      {zh:'蛋糕被他吃完了。',py:'Dàngāo bèi tā chī wán le.',vn:'Bánh ngọt bị anh ấy ăn hết rồi.'},
+    ]
+  },
+  {
+    title: '除了...以外 — Ngoài... ra',
+    level: 'HSK3/GT3',
+    structure: '除了 + A + 以外，(还/都/也) + ...',
+    note: 'Hai nghĩa: (1) "Ngoài A ra, còn..." — thêm vào (dùng 还/也); (2) "Trừ A ra, tất cả..." — loại trừ (dùng 都). Chú ý phân biệt ngữ cảnh.',
+    examples: [
+      {zh:'除了汉语以外，她还会日语。',py:'Chúle Hànyǔ yǐwài, tā hái huì Rìyǔ.',vn:'Ngoài tiếng Trung ra, cô ấy còn biết tiếng Nhật.'},
+      {zh:'除了他以外，大家都来了。',py:'Chúle tā yǐwài, dàjiā dōu lái le.',vn:'Trừ anh ấy ra, mọi người đều đến.'},
+    ]
+  },
+  {
+    title: '结果补语 — Bổ ngữ kết quả',
+    level: 'HSK2/HSK3',
+    structure: '动词 + 结果补语 (完/好/到/懂/错/对...)',
+    note: 'Bổ ngữ kết quả chỉ ra kết quả của động tác. Một số bổ ngữ thường gặp: 完 (xong), 好 (tốt/xong), 到 (đạt được), 懂 (hiểu), 错 (sai), 对 (đúng), 会 (biết làm).',
+    examples: [
+      {zh:'我听懂了！',py:'Wǒ tīng dǒng le!',vn:'Tôi nghe hiểu rồi!'},
+      {zh:'作业做完了吗？',py:'Zuòyè zuò wán le ma?',vn:'Bài tập làm xong chưa?'},
+      {zh:'你写错了一个字。',py:'Nǐ xiě cuò le yī gè zì.',vn:'Bạn viết sai một chữ.'},
+    ]
+  },
+  {
+    title: '趋向补语 — Bổ ngữ xu hướng',
+    level: 'HSK3',
+    structure: '动词 + 趋向补语 (上/下/进/出/回/过/起 + 来/去)',
+    note: 'Chỉ hướng chuyển động so với người nói. 来 = về phía người nói; 去 = ra xa người nói. Dạng đơn: 上/下来/去, dạng phức: 上来, 下去, 进来, 出去...',
+    examples: [
+      {zh:'请进来！',py:'Qǐng jìn lái!',vn:'Xin mời vào!'},
+      {zh:'他走出去了。',py:'Tā zǒu chū qù le.',vn:'Anh ấy đi ra ngoài rồi.'},
+      {zh:'把书拿出来。',py:'Bǎ shū ná chū lái.',vn:'Lấy sách ra đây.'},
+    ]
+  },
+  {
+    title: '程度补语 — Bổ ngữ mức độ (得)',
+    level: 'HSK2/HSK3',
+    structure: '动词/形容词 + 得 + 补语',
+    note: 'Dùng "得" nối động từ/tính từ với phần bổ sung đánh giá mức độ. Khi có tân ngữ: tân ngữ đứng sau ĐT, sau đó lặp ĐT + 得 + bổ ngữ. Phủ định: 得不.',
+    examples: [
+      {zh:'她跑得很快。',py:'Tā pǎo de hěn kuài.',vn:'Cô ấy chạy rất nhanh.'},
+      {zh:'他汉语说得不好。',py:'Tā Hànyǔ shuō de bù hǎo.',vn:'Anh ấy nói tiếng Trung không tốt.'},
+      {zh:'今天热得我受不了。',py:'Jīntiān rè de wǒ shòu bù liǎo.',vn:'Hôm nay nóng đến mức tôi chịu không nổi.'},
+    ]
+  },
+  {
+    title: '虽然...但是 / 尽管...还是 — Tuy... nhưng',
+    level: 'HSK2/HSK3',
+    structure: '虽然/尽管 + A，但是/可是/还是 + B',
+    note: '虽然...但是 = "tuy... nhưng" — nhượng bộ thông thường. 尽管...还是 = "dù... vẫn" — nhấn mạnh kết quả không thay đổi bất chấp điều kiện.',
+    examples: [
+      {zh:'虽然下雨，但是我还是去了。',py:'Suīrán xià yǔ, dànshì wǒ háishi qù le.',vn:'Tuy trời mưa nhưng tôi vẫn đi.'},
+      {zh:'尽管很难，他还是坚持下来了。',py:'Jǐnguǎn hěn nán, tā háishi jiānchí xiàlái le.',vn:'Dù rất khó, anh ấy vẫn kiên trì.'},
+    ]
+  },
+];
+
+const EXERCISES_VOCAB = [
+  {
+    q:'选择正确的意思 — "觉得"的意思是什么？',
+    zh:'他觉得这个电影很好看。',
+    opts:['cảm thấy, cho rằng','biết được, nhận ra','tìm kiếm, tra cứu','ngủ thiếp đi'],
+    ans:0,
+    ex:'觉得 (juéde) = cảm thấy, cho rằng — dùng để diễn đạt cảm nhận chủ quan.'
+  },
+  {
+    q:'选择正确的意思 — "已经"的意思是什么？',
+    zh:'我已经学了两年汉语了。',
+    opts:['sẽ (tương lai)','đã (rồi)','vừa mới','đang'],
+    ans:1,
+    ex:'已经 (yǐjīng) = đã... rồi — chỉ hành động hoàn thành trước thời điểm nói.'
+  },
+  {
+    q:'下面哪个词语表示"dự định"？',
+    zh:'她___暑假去旅游。',
+    opts:['一定','打算','可能','应该'],
+    ans:1,
+    ex:'打算 (dǎsuàn) = dự định, có kế hoạch — 一定=nhất định, 可能=có thể, 应该=nên.'
+  },
+  {
+    q:'"努力"的正确使用是？',
+    zh:'要___学习才能成功。',
+    opts:['复杂','努力','困难','随着'],
+    ans:1,
+    ex:'努力 (nǔlì) = cố gắng, nỗ lực — là tính từ có thể dùng như trạng từ trước động từ.'
+  },
+];
+
+const EXERCISES_GRAMMAR = [
+  {
+    q:'Điền vào chỗ trống với từ phù hợp:',
+    zh:'请___书放在桌子上。(把/被/比/虽然)',
+    blank: true,
+    ans:'把',
+    note:'Câu 把 — chủ ngữ chủ động xử lý tân ngữ 书 (quyển sách) → đặt lên bàn.'
+  },
+  {
+    q:'Chọn câu đúng về ngữ pháp:',
+    zh:'',
+    opts:[
+      '他比我很高。',
+      '他比我高多了。',
+      '他比我更高很多。',
+      '他比我高一些很多。'
+    ],
+    ans:1,
+    ex:'Câu so sánh: A+比+B+形容词+多了. Không dùng 很 sau tính từ trong câu 比.'
+  },
+  {
+    q:'Điền bổ ngữ kết quả thích hợp:',
+    zh:'我听___老师说的话了。(懂/完/错/好)',
+    blank: true,
+    ans:'懂',
+    note:'听懂 = nghe hiểu. 听完 = nghe hết. Ở đây cần nghĩa "hiểu" nên dùng 懂.'
+  },
+  {
+    q:'Câu bị động nào đúng?',
+    zh:'',
+    opts:[
+      '我的作业被老师了。',
+      '我的作业被老师批评。',
+      '我的作业被老师批评了。',
+      '被老师批评我的作业了。'
+    ],
+    ans:2,
+    ex:'Câu 被 cần: tân ngữ + 被 + chủ thể + ĐT + bổ ngữ/了. ĐT không thể đứng một mình.'
+  },
+];
+
+const EXERCISES_WRITING = [
+  {
+    prompt:'写一段话介绍自己的学习计划。(Viết đoạn văn giới thiệu kế hoạch học tập của bạn.)',
+    hint:'Gợi ý: 我打算... / 我每天... / 虽然...但是... / 我的目标是...',
+    model:'我打算每天学一个小时汉语。虽然汉语很难，但是我很有兴趣。我的目标是通过HSK3考试。',
+    model_vn:'Tôi dự định mỗi ngày học tiếng Trung một tiếng. Tuy tiếng Trung khó nhưng tôi rất hứng thú. Mục tiêu của tôi là vượt qua kỳ thi HSK3.'
+  },
+  {
+    prompt:'用"虽然...但是"和"除了...以外"各造一个句子。(Đặt câu với "tuy... nhưng" và "ngoài... ra".)',
+    hint:'虽然_____，但是_____。除了_____以外，_____。',
+    model:'虽然越南和中国的文化有点不同，但是有很多相似的地方。除了汉语以外，我还想学日语。',
+    model_vn:'Tuy văn hóa Việt Nam và Trung Quốc có khác nhau, nhưng có nhiều điểm tương đồng. Ngoài tiếng Trung ra, tôi còn muốn học tiếng Nhật.'
+  },
+];
+
+const EXERCISES_READING = [
+  {
+    passage:'小李是一个大学生，他每天都很努力地学习汉语。虽然开始的时候觉得很困难，但是他没有放弃。他按照老师的方法学习，每天听录音、背单词、练习写汉字。经过一年的努力，他的汉语水平提高了很多，已经可以和中国朋友用汉语聊天了。他觉得，学好一门外语最重要的是坚持。',
+    py:'Xiǎo Lǐ shì yī gè dàxuéshēng, tā měitiān dōu hěn nǔlì de xuéxí Hànyǔ...',
+    vn:'Tiểu Lý là một sinh viên đại học, mỗi ngày đều chăm chỉ học tiếng Trung. Tuy ban đầu cảm thấy rất khó, nhưng anh ấy không bỏ cuộc...',
+    questions: [
+      {q:'小李每天做什么？',opts:['打游戏','学汉语','看电视','上班'],ans:1},
+      {q:'他学习有什么方法？',opts:['只背单词','听录音、背单词、练写字','只听录音','找中国朋友'],ans:1},
+      {q:'他认为学好外语最重要的是什么？',opts:['方法','天赋','坚持','努力'],ans:2},
+    ]
+  }
+];
+
+const EXERCISES_LISTENING = [
+  {zh:'我每天都要按照老师的要求完成作业，虽然有时候觉得很累，但是我知道这样做对我很有帮助。',
+   py:'Wǒ měitiān dōu yào ànzhào lǎoshī de yāoqiú wánchéng zuòyè, suīrán yǒu shíhou juéde hěn lèi, dànshì wǒ zhīdào zhèyàng zuò duì wǒ hěn yǒu bāngzhù.',
+   vn:'Mỗi ngày tôi đều hoàn thành bài tập theo yêu cầu của giáo viên, dù đôi khi cảm thấy rất mệt, nhưng tôi biết làm vậy rất có ích cho mình.',
+   q:'Người nói cảm thấy thế nào?',
+   opts:['Rất vui vẻ','Đôi khi mệt nhưng vẫn cố gắng','Muốn bỏ học','Không hiểu bài'],
+   ans:1},
+  {zh:'随着科技的发展，人们的生活越来越方便了。但是，我们也应该注意保护环境，这样才能让下一代生活得更好。',
+   py:'Suízhe kējì de fāzhǎn, rénmen de shēnghuó yuè lái yuè fāngbiàn le...',
+   vn:'Cùng với sự phát triển của khoa học kỹ thuật, cuộc sống của mọi người ngày càng tiện lợi hơn...',
+   q:'Câu này nói về điều gì?',
+   opts:['Chỉ nói về công nghệ','Công nghệ và bảo vệ môi trường','Cuộc sống khó khăn','Thế hệ tương lai'],
+   ans:1},
+];
+
+const SPEAKING_PROMPTS = [
+  {
+    topic:'自我介绍 — Tự giới thiệu',
+    prompt:'请用汉语介绍一下自己。(Hãy giới thiệu bản thân bằng tiếng Trung.)',
+    points:['Tên, tuổi, quê quán','Nghề nghiệp / học sinh / sinh viên','Sở thích','Tại sao học tiếng Trung'],
+    sample:'我叫___，今年___岁，来自越南。我是一名___。我喜欢___。我学习汉语，因为___。'
+  },
+  {
+    topic:'谈学习计划 — Kế hoạch học tập',
+    prompt:'你的汉语学习计划是什么？(Kế hoạch học tiếng Trung của bạn là gì?)',
+    points:['Mỗi ngày học bao nhiêu tiếng','Dùng tài liệu gì','Mục tiêu (HSK mấy)','Khó khăn gặp phải'],
+    sample:'我每天学___小时汉语。我用___学习。我的目标是___。虽然___，但是我会继续努力。'
+  },
+  {
+    topic:'比较越南和中国 — So sánh VN và TQ',
+    prompt:'越南和中国有什么相同和不同的地方？',
+    points:['Văn hóa, ẩm thực','Ngôn ngữ','Phong tục tập quán','Điểm tương đồng'],
+    sample:'越南和中国都是___。但是，___比___更___。除了___以外，两国都___。'
+  },
+];
+
+const VIDEOS = [
+  {
+    channel:'YCT Tiếng Trung',
+    title:'HSK 2 Từ Vựng Đầy Đủ — Nghe & Học Theo Chủ Đề',
+    desc:'Toàn bộ 150 từ HSK2 phân theo chủ đề, có pinyin, nghĩa tiếng Việt, ví dụ câu. Phù hợp ôn thi.',
+    url:'https://www.youtube.com/@YCTTiengTrung',
+    tags:['HSK2','Từ vựng','Tiếng Việt'],
+    icon:'词'
+  },
+  {
+    channel:'Học Tiếng Trung VN',
+    title:'Giáo Trình Hán Ngữ 3 — Bài 1 đến Bài 10 Đầy Đủ',
+    desc:'Giải thích từng bài trong giáo trình Hán ngữ 3, có dịch nghĩa và luyện tập theo từng bài.',
+    url:'https://www.youtube.com/results?search_query=gi%C3%A1o+tr%C3%ACnh+h%C3%A1n+ng%E1%BB%AF+3',
+    tags:['汉语教程3','Ngữ pháp'],
+    icon:'语'
+  },
+  {
+    channel:'Chinese Zero to Hero',
+    title:'HSK 3 Grammar Points Explained Simply',
+    desc:'All HSK3 grammar structures explained in English with tons of examples. Great for self-study.',
+    url:'https://www.youtube.com/@ChineseZerotoHero',
+    tags:['HSK3','Grammar','English'],
+    icon:'法'
+  },
+  {
+    channel:'Mandarin Corner',
+    title:'Intermediate Chinese Conversations (HSK3 Level)',
+    desc:'Real Chinese conversations at intermediate level, with subtitles. Great for listening practice.',
+    url:'https://www.youtube.com/@MandarinCorner',
+    tags:['Listening','Conversation','HSK3'],
+    icon:'听'
+  },
+  {
+    channel:'HSK Standard Course',
+    title:'HSK 3 Standard Course — Official Textbook Videos',
+    desc:'Official companion videos for HSK 3 Standard Course textbook, following each lesson.',
+    url:'https://www.youtube.com/results?search_query=HSK+3+standard+course+video',
+    tags:['HSK3','Official','Textbook'],
+    icon:'书'
+  },
+  {
+    channel:'Chinese Class 101',
+    title:'Top 100 Chinese Phrases for HSK2-3 Learners',
+    desc:'Essential phrases and vocabulary for intermediate learners, with pronunciation guide.',
+    url:'https://www.youtube.com/@ChineseClass101',
+    tags:['HSK2','HSK3','Phrases'],
+    icon:'句'
+  },
+  {
+    channel:'Yoyo Chinese',
+    title:'Chinese Grammar — 把 Sentence Structure Explained',
+    desc:'Deep dive into the 把字句, one of the trickiest grammar points for learners.',
+    url:'https://www.youtube.com/@yoyochinese',
+    tags:['Grammar','把字句','Intermediate'],
+    icon:'把'
+  },
+  {
+    channel:'HSK Tiếng Trung',
+    title:'Luyện Nghe HSK2 — 30 Đoạn Hội Thoại Mẫu',
+    desc:'30 đoạn hội thoại luyện nghe chuẩn format HSK2, có transcript và giải thích từ vựng.',
+    url:'https://www.youtube.com/results?search_query=luy%E1%BB%87n+nghe+HSK2+ti%E1%BA%BFng+vi%E1%BB%87t',
+    tags:['Nghe','HSK2','Luyện thi'],
+    icon:'🎧'
+  },
+];
+
+// ==================== SRS SM-2 ====================
+const SRS_KEY = 'hsk_srs_data_v1';
+
+function loadSrs() {
+  try { return JSON.parse(localStorage.getItem(SRS_KEY)) || {}; } catch { return {}; }
+}
+function saveSrs(data) {
+  try { localStorage.setItem(SRS_KEY, JSON.stringify(data)); } catch {}
+}
+
+function getSrsCard(id) {
+  const d = loadSrs();
+  return d[id] || { interval:0, repetitions:0, ef:2.5, nextReview:0, state:'new' };
+}
+
+function updateSrsCard(id, quality) {
+  // SM-2 algorithm
+  const d = loadSrs();
+  let c = getSrsCard(id);
+  const now = Date.now();
+
+  if (quality === 0) {
+    c.repetitions = 0; c.interval = 1; c.state = 'learning';
+  } else {
+    if (c.repetitions === 0) c.interval = 1;
+    else if (c.repetitions === 1) c.interval = 3;
+    else c.interval = Math.round(c.interval * c.ef);
+
+    if (quality === 3) c.interval = Math.round(c.interval * 1.3);
+
+    c.ef = Math.max(1.3, c.ef + 0.1 - (3 - quality) * (0.08 + (3 - quality) * 0.02));
+    c.repetitions += 1;
+    c.state = c.ef >= 2.3 && c.interval >= 21 ? 'mastered' : 'review';
+  }
+
+  c.nextReview = now + c.interval * 86400000;
+  d[id] = c;
+  saveSrs(d);
+  return c;
+}
+
+function getSrsStats() {
+  const d = loadSrs();
+  const now = Date.now();
+  let due=0, newC=0, learning=0, mastered=0;
+  VOCAB.forEach((w,i) => {
+    const c = d[i] || {state:'new', nextReview:0};
+    if (c.state === 'new') newC++;
+    else if (c.state === 'mastered') mastered++;
+    else if (c.state === 'learning') learning++;
+    if (c.state !== 'new' && c.nextReview <= now) due++;
+  });
+  return {due, new:newC, learning, mastered};
+}
+
+// ==================== FC SESSION ====================
+let fcQueue = [], fcIdx = 0, fcFlipped = false, srsFilter = 'all';
+
+function buildFcQueue(filter) {
+  const now = Date.now();
+  const d = loadSrs();
+  fcQueue = [];
+
+  VOCAB.forEach((w,i) => {
+    if (filter !== 'all' && w.level !== filter) return;
+    const c = d[i] || {state:'new', nextReview:0};
+    if (c.state === 'new' || c.nextReview <= now) fcQueue.push(i);
+  });
+
+  // Shuffle
+  for (let i = fcQueue.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [fcQueue[i],fcQueue[j]] = [fcQueue[j],fcQueue[i]];
+  }
+  fcIdx = 0;
+}
+
+function loadFcCard() {
+  if (fcIdx >= fcQueue.length) {
+    document.getElementById('fc-big').style.display='none';
+    document.getElementById('srs-buttons').style.display='none';
+    document.getElementById('fc-done').style.display='block';
+    updateSrsStats();
+    return;
+  }
+  const id = fcQueue[fcIdx];
+  const w = VOCAB[id];
+  const c = getSrsCard(id);
+
+  document.getElementById('fc-hanzi').textContent = w.zh;
+  document.getElementById('fc-pinyin').textContent = w.py;
+  document.getElementById('fc-meaning').textContent = w.vn;
+  document.getElementById('fc-type').textContent = w.type + ' · ' + w.level.toUpperCase();
+  if (w.ex && w.ex[0]) {
+    document.getElementById('fc-ex').textContent = w.ex[0].zh;
+    document.getElementById('fc-exvn').textContent = w.ex[0].vn;
+  }
+
+  const total = fcQueue.length;
+  document.getElementById('fc-meta-card').textContent = `${fcIdx+1} / ${total}`;
+  document.getElementById('fc-pbar').style.width = `${(fcIdx/total)*100}%`;
+
+  // Show intervals
+  const ef = c.ef || 2.5;
+  const iv = c.interval || 0;
+  document.getElementById('srs-interval-hard').textContent = `${Math.max(1, Math.round(iv * 1.2))} ngày`;
+  document.getElementById('srs-interval-good').textContent = `${Math.max(2, Math.round(Math.max(iv,1) * ef))} ngày`;
+  document.getElementById('srs-interval-easy').textContent = `${Math.max(4, Math.round(Math.max(iv,1) * ef * 1.3))} ngày`;
+
+  document.getElementById('fc-big').classList.remove('flipped');
+  document.getElementById('fc-big').style.display='block';
+  document.getElementById('fc-done').style.display='none';
+  document.getElementById('srs-buttons').style.display='none';
+  document.getElementById('fc-meta-left').textContent='Nhấn vào thẻ để lật';
+  fcFlipped = false;
+}
+
+function flipFc() {
+  const big = document.getElementById('fc-big');
+  if (!fcFlipped) {
+    big.classList.add('flipped');
+    fcFlipped = true;
+    document.getElementById('srs-buttons').style.display='flex';
+    document.getElementById('fc-meta-left').textContent='Đánh giá mức độ nhớ:';
+    speak(VOCAB[fcQueue[fcIdx]].zh);
+  }
+}
+
+function srsAnswer(q) {
+  updateSrsCard(fcQueue[fcIdx], q);
+  fcIdx++;
+  updateSrsStats();
+  loadFcCard();
+}
+
+function updateSrsStats() {
+  const s = getSrsStats();
+  document.getElementById('srs-due').textContent = s.due;
+  document.getElementById('srs-new').textContent = s.new;
+  document.getElementById('srs-learning').textContent = s.learning;
+  document.getElementById('srs-mastered').textContent = s.mastered;
+}
+
+function setSrsFilter(f, el) {
+  srsFilter = f;
+  document.querySelectorAll('.srs-filter .filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  buildFcQueue(f);
+  loadFcCard();
+}
+
+function resetFcSession() {
+  buildFcQueue(srsFilter);
+  loadFcCard();
+}
+
+// ==================== VOCAB ====================
+let vocabFilter = 'all';
+
+function renderVocab(filter, search='') {
+  const grid = document.getElementById('vocab-grid');
+  grid.innerHTML = '';
+  const q = search.toLowerCase();
+
+  VOCAB.forEach((w,i) => {
+    const matchFilter = filter==='all' || w.level===filter || w.type===filter ||
+      (filter==='n' && w.type.includes('n')) ||
+      (filter==='v' && w.type.includes('v') && !w.type.includes('adj')) ||
+      (filter==='adj' && (w.type.includes('adj') || w.type.includes('形')));
+    const matchSearch = !q || w.zh.includes(q) || w.py.toLowerCase().includes(q) || w.vn.toLowerCase().includes(q);
+    if (!matchFilter || !matchSearch) return;
+
+    const el = document.createElement('div');
+    el.className = 'vocab-card';
+    el.innerHTML = `
+      <span class="hsk-badge ${w.level}">${w.level.toUpperCase()}</span>
+      <div class="vocab-hanzi">${w.zh}</div>
+      <div class="vocab-pinyin">${w.py}</div>
+      <div class="vocab-viet">${w.vn}</div>
+      <span class="vocab-type">${w.type}</span>`;
+    el.onclick = () => openVocabModal(i);
+    grid.appendChild(el);
+  });
+}
+
+function filterVocab(f, el) {
+  vocabFilter = f;
+  document.querySelectorAll('.vocab-controls .filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderVocab(f, document.getElementById('vocab-search').value);
+}
+
+function searchVocab() {
+  renderVocab(vocabFilter, document.getElementById('vocab-search').value);
+}
+
+function openVocabModal(i) {
+  const w = VOCAB[i];
+  document.getElementById('m-hz').textContent = w.zh;
+  document.getElementById('m-py').textContent = w.py;
+  document.getElementById('m-mn').textContent = w.vn;
+  document.getElementById('m-tp').textContent = `${w.type} · ${w.level.toUpperCase()}`;
+  const exsEl = document.getElementById('m-exs');
+  exsEl.innerHTML = '';
+  (w.ex||[]).forEach(e => {
+    exsEl.innerHTML += `<div class="example-block">
+      <div class="zh">${e.zh}</div>
+      <div class="py">${e.py}</div>
+      <div class="vn">${e.vn}</div>
+    </div>`;
+  });
+  document.getElementById('vocab-modal').classList.add('open');
+}
+
+function closeVocabModal(e) {
+  if (e.target===document.getElementById('vocab-modal'))
+    document.getElementById('vocab-modal').classList.remove('open');
+}
+
+// ==================== GRAMMAR ====================
+function renderGrammar() {
+  const list = document.getElementById('grammar-list');
+  list.innerHTML = '';
+  GRAMMAR.forEach((g,i) => {
+    const el = document.createElement('div');
+    el.className = 'grammar-card';
+    el.innerHTML = `
+      <div class="grammar-header" onclick="toggleGrammar(this)">
+        <div class="grammar-num">${i+1}</div>
+        <div class="grammar-title">${g.title}</div>
+        <span class="grammar-level">${g.level}</span>
+        <span class="grammar-toggle">⌄</span>
+      </div>
+      <div class="grammar-body">
+        <div class="grammar-structure">${g.structure}</div>
+        <p class="grammar-note">${g.note}</p>
+        <div class="grammar-examples">
+          ${g.examples.map(ex=>`
+            <div class="grammar-ex">
+              <div class="zh">${ex.zh}</div>
+              <div class="py">${ex.py}</div>
+              <div class="vn">${ex.vn}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+    list.appendChild(el);
+  });
+}
+
+function toggleGrammar(header) {
+  const card = header.closest('.grammar-card');
+  card.classList.toggle('open');
+}
+
+// ==================== EXERCISES ====================
+function renderExercises() {
+  // Vocab MCQ
+  const vc = document.getElementById('vocab-exercises-container');
+  vc.innerHTML = '';
+  EXERCISES_VOCAB.forEach((ex,i) => {
+    vc.innerHTML += buildMcqCard(ex, i, 'vcq');
+  });
+
+  // Grammar
+  const gc = document.getElementById('grammar-exercises-container');
+  gc.innerHTML = '';
+  EXERCISES_GRAMMAR.forEach((ex,i) => {
+    if (ex.blank) gc.innerHTML += buildFillCard(ex, i);
+    else gc.innerHTML += buildMcqCard(ex, i, 'gq');
+  });
+
+  // Writing
+  const wc = document.getElementById('writing-container');
+  wc.innerHTML = '';
+  EXERCISES_WRITING.forEach((ex,i) => {
+    wc.innerHTML += `
+      <div class="exercise-card">
+        <div class="ex-num">BÀI VIẾT ${i+1}</div>
+        <div class="writing-prompt">${ex.prompt}</div>
+        <p style="font-size:13px;color:var(--ink3);margin-bottom:12px;font-style:italic">${ex.hint}</p>
+        <textarea class="writing-area" placeholder="Viết câu trả lời của bạn ở đây..."></textarea>
+        <br>
+        <button class="btn-check" onclick="showModel(this)">Xem đáp án mẫu</button>
+        <div class="model-answer">
+          <div class="label">ĐÁP ÁN MẪU</div>
+          <div class="content">${ex.model}</div>
+          <div class="content-vn">${ex.model_vn}</div>
+        </div>
+      </div>`;
+  });
+
+  // Reading
+  const rc = document.getElementById('reading-container');
+  rc.innerHTML = '';
+  EXERCISES_READING.forEach((r,ri) => {
+    let qHtml = r.questions.map((q,qi)=>`
+      <div style="margin-top:16px">
+        <p style="font-size:14px;font-weight:500;margin-bottom:10px">${qi+1}. ${q.q}</p>
+        <div class="mcq-grid">${q.opts.map((o,oi)=>`
+          <button class="mcq-opt" onclick="checkReadingMcq(this,${oi},${q.ans},'rq${ri}_${qi}')" id="rq${ri}_${qi}_${oi}">${o}</button>
+        `).join('')}</div>
+      </div>`).join('');
+
+    rc.innerHTML += `
+      <div class="exercise-card">
+        <div class="ex-num">ĐỌC HIỂU ${ri+1}</div>
+        <div style="background:var(--paper2);border-radius:var(--radius-sm);padding:18px 20px;margin-bottom:16px;border-left:4px solid var(--gold);">
+          <div style="font-family:'Noto Serif SC',serif;font-size:17px;line-height:1.9;color:var(--ink)">${r.passage}</div>
+          <button class="speak-btn-sm" style="margin-top:10px" onclick="speak('${r.passage.replace(/'/g,"\\'")}')">🔊 Nghe đọc</button>
+        </div>
+        <p style="font-size:13px;color:var(--ink3);margin-bottom:16px;font-style:italic">${r.vn}</p>
+        ${qHtml}
+      </div>`;
+  });
+
+  // Listening
+  const lc = document.getElementById('listening-container');
+  lc.innerHTML = '';
+  EXERCISES_LISTENING.forEach((ex,i) => {
+    lc.innerHTML += `
+      <div class="exercise-card">
+        <div class="ex-num">LUYỆN NGHE ${i+1}</div>
+        <div class="listen-card">
+          <div class="listen-icon">🎧</div>
+          <p style="font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:12px">Nhấn để nghe đoạn văn, sau đó trả lời câu hỏi.</p>
+          <button class="listen-btn" onclick="speakListen('${ex.zh.replace(/'/g,"\\'")}', this)">▶ Phát âm thanh</button>
+          <div class="listen-text" id="lt${i}">${ex.zh}</div>
+          <button style="margin-top:10px;padding:7px 16px;background:transparent;border:1px solid rgba(255,255,255,0.3);border-radius:10px;color:rgba(255,255,255,0.6);cursor:pointer;font-family:inherit;font-size:12px" onclick="document.getElementById('lt${i}').classList.toggle('revealed')">Hiện/Ẩn transcript</button>
+        </div>
+        <p style="font-size:14px;font-weight:500;margin-bottom:10px">${ex.q}</p>
+        <div class="mcq-grid">${ex.opts.map((o,oi)=>`
+          <button class="mcq-opt" onclick="checkReadingMcq(this,${oi},${ex.ans},'lq${i}')">${o}</button>
+        `).join('')}</div>
+        <div class="ex-feedback" id="lq${i}-fb"></div>
+      </div>`;
+  });
+
+  // Speaking
+  const sc = document.getElementById('speaking-container');
+  sc.innerHTML = `
+    <div style="background:var(--paper2);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;border-left:4px solid var(--gold)">
+      <p style="font-size:14px;font-weight:500;color:var(--ink);margin-bottom:6px">💡 Cách luyện nói hiệu quả:</p>
+      <p style="font-size:13px;color:var(--ink3);line-height:1.7">
+        1. Đọc chủ đề và gợi ý bên dưới → 2. Nghe câu mẫu (nhấn nút 🔊) → 3. Ghi âm bản thân nói và so sánh → 4. Lặp lại 3-5 lần/chủ đề mỗi ngày.
+      </p>
+    </div>`;
+  SPEAKING_PROMPTS.forEach((sp,i) => {
+    sc.innerHTML += `
+      <div class="exercise-card">
+        <div class="ex-num">${sp.topic}</div>
+        <div class="writing-prompt" style="font-family:inherit;font-size:15px;">${sp.prompt}</div>
+        <div style="margin:14px 0;">
+          <p style="font-size:12px;font-weight:600;color:var(--ink3);margin-bottom:8px;letter-spacing:0.06em;text-transform:uppercase">Gợi ý nội dung</p>
+          <ul style="padding-left:18px;font-size:13.5px;color:var(--ink2);line-height:2">
+            ${sp.points.map(p=>`<li>${p}</li>`).join('')}
+          </ul>
+        </div>
+        <div style="background:var(--paper2);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:14px">
+          <p style="font-size:11px;font-weight:600;color:var(--ink3);margin-bottom:6px;letter-spacing:0.06em">KHUNG CÂU GỢI Ý</p>
+          <div style="font-family:'Noto Serif SC',serif;font-size:16px;color:var(--red-dark)">${sp.sample}</div>
+        </div>
+        <button class="speak-btn-sm" onclick="speak('${sp.sample.replace(/[_·]/g,'').replace(/'/g,"\\'")}')">🔊 Nghe câu mẫu</button>
+      </div>`;
+  });
+}
+
+function buildMcqCard(ex, i, prefix) {
+  return `
+    <div class="exercise-card">
+      <div class="ex-num">CÂU ${i+1}</div>
+      <p class="ex-question-en" style="font-size:14px;color:var(--ink);font-weight:500;font-style:normal;margin-bottom:4px">${ex.q}</p>
+      ${ex.zh ? `<div class="ex-question">${ex.zh}</div>` : ''}
+      <div class="mcq-grid" style="margin-top:16px">${ex.opts.map((o,oi)=>`
+        <button class="mcq-opt" onclick="checkMcq(this,${oi},${ex.ans},'${prefix}${i}','${(ex.ex||ex.note||'').replace(/'/g,"&apos;")}')">${o}</button>
+      `).join('')}</div>
+      <div class="ex-feedback" id="${prefix}${i}-fb"></div>
+    </div>`;
+}
+
+function buildFillCard(ex, i) {
+  return `
+    <div class="exercise-card">
+      <div class="ex-num">ĐIỀN KHUYẾT ${i+1}</div>
+      <p style="font-size:14px;color:var(--ink);font-weight:500;margin-bottom:12px">${ex.q}</p>
+      <div class="ex-question" style="margin-bottom:12px">${ex.zh}</div>
+      <input type="text" class="fill-input" id="fill${i}" placeholder="Nhập câu trả lời...">
+      <br>
+      <button class="btn-check" onclick="checkFill('fill${i}','${ex.ans}','fill${i}-fb','${(ex.note||'').replace(/'/g,"&apos;")}')">Kiểm tra</button>
+      <div class="ex-feedback" id="fill${i}-fb"></div>
+    </div>`;
+}
+
+function checkMcq(btn, chosen, ans, id, note) {
+  const card = btn.closest('.exercise-card');
+  card.querySelectorAll('.mcq-opt').forEach(b => { b.disabled=true; });
+  if (chosen===ans) {
+    btn.classList.add('correct');
+    const fb = document.getElementById(id+'-fb');
+    fb.className = 'ex-feedback show ok';
+    fb.textContent = '✓ Chính xác! ' + (note||'');
+  } else {
+    btn.classList.add('wrong');
+    card.querySelectorAll('.mcq-opt')[ans].classList.add('correct');
+    const fb = document.getElementById(id+'-fb');
+    fb.className = 'ex-feedback show ko';
+    fb.textContent = '✗ Chưa đúng. ' + (note||'');
+  }
+}
+
+function checkReadingMcq(btn, chosen, ans, id) {
+  const card = btn.closest('.exercise-card');
+  const group = btn.parentElement.querySelectorAll('.mcq-opt');
+  group.forEach(b => b.disabled=true);
+  if (chosen===ans) btn.classList.add('correct');
+  else { btn.classList.add('wrong'); group[ans].classList.add('correct'); }
+  const fb = document.getElementById(id+'-fb');
+  if (fb) { fb.className='ex-feedback show '+(chosen===ans?'ok':'ko'); fb.textContent=chosen===ans?'✓ Chính xác!':'✗ Đáp án sai.'; }
+}
+
+function checkFill(inputId, ans, fbId, note) {
+  const input = document.getElementById(inputId);
+  const fb = document.getElementById(fbId);
+  const val = input.value.trim();
+  if (val === ans) {
+    input.classList.add('correct');
+    fb.className = 'ex-feedback show ok';
+    fb.textContent = '✓ Đúng rồi! ' + note;
+  } else {
+    input.classList.add('wrong');
+    fb.className = 'ex-feedback show ko';
+    fb.textContent = `✗ Đáp án đúng: ${ans}. ${note}`;
+  }
+}
+
+function showModel(btn) {
+  const card = btn.closest('.exercise-card');
+  const model = card.querySelector('.model-answer');
+  model.classList.toggle('show');
+  btn.textContent = model.classList.contains('show') ? 'Ẩn đáp án' : 'Xem đáp án mẫu';
+}
+
+// ==================== VIDEOS ====================
+function renderVideos() {
+  const grid = document.getElementById('video-grid');
+  const colors = ['#C0392B','#1A4A8A','#1A6B3A','#7D6608','#6C3483','#A04000','#0E6655','#7B241C'];
+  grid.innerHTML = '';
+  VIDEOS.forEach((v,i) => {
+    const el = document.createElement('a');
+    el.className = 'video-card';
+    el.href = v.url;
+    el.target = '_blank';
+    el.innerHTML = `
+      <div class="video-thumb" style="background:${colors[i%colors.length]}">
+        <div class="video-thumb-bg">${v.icon}</div>
+        <div class="play-btn">▶</div>
+      </div>
+      <div class="video-info">
+        <div class="video-channel">${v.channel}</div>
+        <div class="video-title">${v.title}</div>
+        <div class="video-desc">${v.desc}</div>
+        <div class="video-tags">${v.tags.map(t=>`<span class="video-tag">${t}</span>`).join('')}</div>
+      </div>`;
+    grid.appendChild(el);
+  });
+}
+
+// ==================== NAV ====================
+function showPage(id, navEl) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(n=>n.classList.remove('active'));
+  if (navEl) {
+    navEl.classList.add('active');
+    // also sync mobile/sidebar
+    document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(n=>{
+      if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'")) n.classList.add('active');
+    });
+  }
+}
+
+function showExSection(id, el) {
+  document.querySelectorAll('.exercise-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.ex-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ==================== SPEAK ====================
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='zh-CN'; u.rate=0.8;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+
+function speakListen(text, btn) {
+  btn.textContent = '⏸ Đang phát...';
+  speak(text);
+  setTimeout(() => { btn.textContent = '▶ Phát âm thanh'; }, text.length * 200);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ==================== INIT ====================
+renderVocab('all');
+renderGrammar();
+renderExercises();
+renderVideos();
+buildFcQueue('all');
+loadFcCard();
+updateSrsStats();
+</script>
+</body>
+</html>
